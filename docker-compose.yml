@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mysql-cnt:
+    image: mysql
+    ports:
+      - 3308:3306
+    volumes:
+      - ./db1:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=test
+  app-cnt:
+    build: .
+    ports:
+    - 8082:8081
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-cnt:3306/test
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - mysql-cnt
